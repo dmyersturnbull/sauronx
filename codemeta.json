@@ -1,0 +1,50 @@
+{
+    "@context":"https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type":"SoftwareSourceCode",
+    "identifier":"sauronx",
+    "name":"sauronx",
+    "description":"Command-line interface and driver for Sauron.",
+    "codeRepository":"https://github.com/dmyersturnbull/sauronx",
+    "issueTracker":"https://github.com/dmyersturnbull/sauronx/issues",
+    "license":"https://www.apache.org/licenses/LICENSE-2.0",
+    "version":"0.1.0",
+    "author":[
+        {
+            "@type":"Person",
+            "givenName":"Douglas",
+            "familyName":"Myers-Turnbull",
+            "@id":"https://orcid.org/0000-0003-3610-4808"
+        },
+        {
+            "@type":"Person",
+            "givenName":"Cole",
+            "familyName":"Helsell",
+            "@id":"https://orcid.org/0000-0002-8869-3125"
+        }
+    ],
+    "contributor": [
+        {
+            "@type":"Person",
+            "givenName":"Chris S",
+            "familyName":"Ki"
+        }
+    ],
+    "maintainer":{
+        "@type":"Person",
+        "givenName":"Douglas",
+        "familyName":"Myers-Turnbull",
+        "@id":"https://orcid.org/0000-0003-3610-4808"
+    },
+    "contIntegration":"https://github.com/dmyersturnbull/sauronx/actions",
+    "developmentStatus":"active",
+    "downloadUrl":"https://pypi.org/project/sauronx/",
+    "keywords":[
+        "arduino",
+		"sauron",
+		"zebrafish",
+		"driver"
+    ],
+    "dateCreated":"2016-01-01",
+    "datePublished":"2020-05-23",
+    "programmingLanguage":"Python"
+}

@@ -1,0 +1,178 @@
+[metadata]
+description-file = "README.md"
+
+[build-system]
+requires = ["poetry>=1.0", "coverage[toml]"]
+build-backend = "poetry.masonry.api"
+
+
+#########################################################################################
+# Poetry metadata
+#########################################################################################
+
+[tool.poetry]
+name = "sauronx"
+version = "0.1.0"
+description = "SauronX"
+keywords = ["arduino", "sauron"]
+authors = ["Douglas Myers-Turnbull", "Cole Helsell"]
+maintainers = ["Douglas Myers-Turnbull"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/dmyersturnbull/sauronx"
+repository = "https://github.com/dmyersturnbull/sauronx"
+documentation = "https://sauronx.readthedocs.io"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+	"Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+include = [
+    "README.md",
+    "LICENSE.txt",
+    "CHANGELOG.md"
+]
+
+[tool.poetry.urls]
+CI = "https://github.com/dmyersturnbull/sauronx/actions"
+Issues = "https://github.com/dmyersturnbull/sauronx/issues"
+Download = "https://pypi.org/project/sauronx/"
+
+
+#########################################################################################
+# Poetry build & dependencies
+#########################################################################################
+
+[tool.poetry.scripts]
+tyrannosaurus = "sauronx.cli:cli"
+
+[tool.poetry.dependencies]
+python                   = ">=3.8, <4"
+typer                    = ">=0.3, <1.0"
+tomlkit                  = ">=0.5, <1.0"
+soundfile                = ">=0.10, <1.0"
+numpy                    = "^1.19"
+pandas                   = ">=1.1, <2.0"
+peewee                   = ">=3.13, <4.0"
+pillow                   = "^7"
+pydub                    = ">=0.24, <1.0"
+typeddfs                 = ">=0.3.0, <1.0"
+pocketutils              = {version=">=0.3.1, <1.0", extras=["tools"]}
+valarpy                  = "^2.2"
+PyMata                   = ">=2.20, <3.0"
+opencv-python-headless   = ">=4.4, <5.0"
+terminaltables           = "^3"
+pyaudio                  = ">=0.2, <1.0"
+
+[tool.poetry.dev-dependencies]
+pre-commit               = "^2"
+pytest                   = "^6"
+pytest-cov               = ">=2.10, <3.0"
+coverage                 = ">=5.2, <6.0"
+sphinx                   = "^3"
+sphinx-autoapi           = "^1"
+sphinx-rtd-theme         = ">=0.5, <1.0"
+mypy                     = ">=0.700, <1.0"
+flake8                   = "^3"
+flake8-docstrings        = "^1"
+black                    = "=19.10b0"
+isort                    = "^5"
+sphinx-autodoc-typehints = "^1"
+hypothesis               = "^5"
+flake8-bandit            = "^2"
+flake8-bugbear           = "^20"
+
+[tool.poetry.extras]
+dev     = [
+        "pre-commit", "pytest", "hypothesis", "coverage", "pytest-cov",
+        "sphinx", "sphinx-autodoc-typehints", "sphinx-autoapi",
+        "mypy",
+        "flake8", "flake8-docstrings",
+        "black", "isort",
+        "flake8-bandit", "flake8-bugbear"
+]
+
+
+#########################################################################################
+# Tyrannosaurus
+#########################################################################################
+
+[tool.tyrannosaurus.options]
+align    = true
+
+[tool.tyrannosaurus.sources]
+status             = "'Development'"
+date               = "'2020-09-10'"
+copyright          = "'Copyright 2016–2020'"
+version            = "tool.poetry.version"
+release            = "tool.poetry.version"
+pyversions         = "tool.poetry.dependencies"
+devdeps            = "tool.poetry.dev-dependencies"
+linelength         = "tool.black.line-length"
+authors = [
+    "Douglas Myers-Turnbull <github:dmyersturnbull,orcid:0000-0003-3610-4808>",
+	"Cole Helsell <github:chelsell,orcid:0000-0002-8869-3125>"
+]
+contributors = [
+	"Chris S Ki <github:chriski777>"
+]
+maintainers = "tool.tyrannosaurus.sources.authors"
+
+
+[tool.tyrannosaurus.targets]
+pyproject    = true
+init         = true
+tox          = true
+docs         = true
+recipes      = true
+license      = true
+authors      = true
+github       = true
+travis       = true
+dockerfile   = true
+readme       = true
+changelog    = true
+citation     = true
+codemeta     = true
+environment  = false
+
+
+#########################################################################################
+# Style checking
+#########################################################################################
+
+[tool.coverage.paths]
+source = ["sauronx"]
+
+[tool.coverage.run]
+source = ["sauronx"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+
+[tool.isort]
+line_length = 100
+
+[mypy]
+check_untyped_defs = true
+strict_optional = true
+
+[pycodestyle]
+max-line-length = 100
+statistics = true
+
+[pydocstyle]
+# 212 and 213 contradict; 203 and 204 contradict; D302 is not relevant in Py3
+# D107 isn't needed sometimes
+# and the rest are just too picky
+ignore = ["D107", "D200", "D203", "D205", "D212", "D302", "D400", "D403", "D409", "D411"]
