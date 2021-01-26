@@ -1,16 +1,19 @@
 # Sauronx
 
-[![Version status](https://img.shields.io/pypi/status/sauronx)](https://pypi.org/project/sauronx/)
+[![Version status](https://img.shields.io/pypi/status/sauronx?label=status)](https://pypi.org/project/sauronx)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sauronx)](https://pypi.org/project/sauronx/)
-[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/dmyersturnbull/sauronx?include_prereleases&label=GitHub)](https://github.com/dmyersturnbull/sauronx/releases)
-[![Latest version on PyPi](https://badge.fury.io/py/sauronx.svg)](https://pypi.org/project/sauronx/)
-[![Documentation status](https://readthedocs.org/projects/sauronx/badge/?version=latest&style=flat-square)](https://sauronx.readthedocs.io/en/stable/)
-[![Build & test](https://github.com/dmyersturnbull/sauronx/workflows/Build%20&%20test/badge.svg)](https://github.com/dmyersturnbull/sauronx/actions)
-[![Maintainability](https://api.codeclimate.com/v1/badges/<<apikey>>/maintainability)](https://codeclimate.com/github/dmyersturnbull/sauronx/maintainability)
-[![Coverage](https://coveralls.io/repos/github/dmyersturnbull/sauronx/badge.svg?branch=master)](https://coveralls.io/github/dmyersturnbull/sauronx?branch=master)
+[![Python version compatibility](https://img.shields.io/pypi/pyversions/sauronx?label=Python)](https://pypi.org/project/sauronx)
+[![Version on Docker Hub](https://img.shields.io/docker/v/dmyersturnbull/sauronx?color=green&label=Docker%20Hub)](https://hub.docker.com/repository/docker/dmyersturnbull/sauronx)
+[![Version on Github](https://img.shields.io/github/v/release/dmyersturnbull/sauronx?include_prereleases&label=GitHub)](https://github.com/dmyersturnbull/sauronx/releases)
+[![Version on PyPi](https://img.shields.io/pypi/v/sauronx?label=PyPi)](https://pypi.org/project/sauronx)
+[![Build (Actions)](https://img.shields.io/github/workflow/status/dmyersturnbull/sauronx/Build%20&%20test?label=Tests)](https://github.com/dmyersturnbull/sauronx/actions)
+[![Documentation status](https://readthedocs.org/projects/sauronx/badge)](https://sauronx.readthedocs.io/en/stable/)
+[![Coverage (coveralls)](https://coveralls.io/repos/github/dmyersturnbull/sauronx/badge.svg?branch=main&service=github)](https://coveralls.io/github/dmyersturnbull/sauronx?branch=main)
+[![Maintainability (Code Climate)](https://api.codeclimate.com/v1/badges/<key>/maintainability)](https://codeclimate.com/github/dmyersturnbull/sauronx/maintainability)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dmyersturnbull/sauronx/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/dmyersturnbull/sauronx/?branch=main)
 
-Second-generation Sauron drivers written in Python.
+
+Second-generation Sauron drivers written in Python and a little C++.
 
 **⚠  WARNING:** This is a port that is currently missing components and needs updating.
 It will not function correctly yet.
@@ -73,20 +76,19 @@ Other subcommands:
 
 ### How data progresses
 
-You can use [Goldberry](https://github.com/dmyersturnbull/valar-bot) and `sauronx clean` (below) to help you understand
-where your data is.
 After you start your submission with `sauronx submit`, your data goes through these stages:
 1. An output directory is made under `~/sauronx-output`.
-2. The camera connects and the ROI is shown. (~1 minute)
+2. The camera connects, and the ROI is shown. (~1 minute)
 3. The frames are captured and saved to `.raw` files. (length of battery)
-4. Timing information (when the frames were caputred) is extracted. (~1 minute)
+4. Timing information (when the frames were captured) is extracted. (~1 minute)
 5. The camera is disconnected, releasing the SauronX lock (described below).
-6. The AVI file is trimmed to the exact bounds of the battery and is converted to an _x265_ `.mkv` video, and the raw
+6. The frames are trimmed to the exact bounds of the battery and converted to an HEVC `.mkv` video, and the raw
    frames are deleted. (~5 minutes)
-7. The data are uploaded to Valinor. (~5 minutes)
-8. Valinor inserts the data as a _run_ in Valar. (~1 minute)
-9. Features are automatically calculated on the data. (~10 minutes)
-10. Valinor transfers the data to the archive server.
+7. The data are uploaded to Valinor (the server). (~5 minutes)
+8. [Valar-dagger](https://github.com/dmyersturnbull/valar-dagger) queues the job.
+9. When ready, it inserts the data as a _run_ into Valar. (~1 minute)
+10. Features are automatically calculated on the data. (~10 minutes)
+11. Valar-dagger transfers the data to the archive server.
 
 You’ll see an error message within 30 seconds if your submission doesn’t start. If it fails or was cancelled before the
 camera was disconnected, the data is probably not usable. If it failed after that but before it was uploaded,
@@ -139,7 +141,7 @@ Red text will be shown if there was an error, and green text if it completed.
 
 The punishment for failing to do this is a warning followed by the death penalty.
 This includes changes to hardware settings in the TOML file, particularly camera settings.
-It’s trivial, so there’s no excuse for forgetting:
+It’s trivial:
 
 ```
 sauronx modify "I rotated the stage counterclockwise."
@@ -150,7 +152,7 @@ sauronx modify "I rotated the stage counterclockwise."
 
 1. Visit https://valinor.ucsf.edu and create a SauronX run, which will give you a unique 12-digit hexadecimal number
 called a SauronX _submission hash_.
-2. Close the door and run `sauronx submit 03c6f1da951e`, filling in your hexdecimal number.
+2. Close the door and run `sauronx submit 03c6f1da951e`, filling in your hexadecimal number.
 3. You should confirm that the image shown looks fine and has the correct ROI. Cancel the job if it doesn’t.
 
 You can show the ROI preview without submitting a job to SauronX using `sauronx preview`.
@@ -172,7 +174,7 @@ If the concern is resolvable (_to_fix_), then anytime (before, during, or after 
 
 1. Make a fixed submission on valinor.ucsf.edu.
 
-2. Ask [Goldberry](https://github.com/dmyersturnbull/goldberry) to replace the old submission with the new one:
+2. Ask [Goldberry](https://github.com/dmyersturnbull/valar-bot) to replace the old submission with the new one:
 
     > @goldberry replace 39ca0d0bh342 with 03c93740a37c
 
@@ -211,10 +213,9 @@ Length (s)      0h, 28m, 40s
 User            darya
 Best stage      cancelled
 Path            /Users/user/sauronx-output/S1/712b95df036a
-Plate run       -
+Run             -
 Project         darya: retest: x-31
-Warning: The extraction failed, leaving a partially created frames directory. This is redundant and consumes excess disk space.
-Warning: The video.avi file exists and is still needed. This is using 45G of disk space and should be dealt with immediately.
+Warning: The compression failed, leaving raw frames. This is using 45 GB of disk space.
 +local storage------+--------------+
 | stage             | file exists? |
 +-------------------+--------------+
@@ -242,7 +243,8 @@ Make sure to empty the trash if you need the storage immediately. You can also s
 sauronx clean --user douglas --status failed
 ```
 
-Run `sauronx clean --help` to see all of the options. If you’re confident, you can run `sauronx clean --auto` to automatically handle the outputs with the recommended actions.
+Run `sauronx clean --help` to see all of the options. If you’re confident, you can run `sauronx clean --auto` to
+automatically handle the outputs with the recommended actions.
 
 Fixing an issue by writing _fix_ is equivalent to running `sauronx continue` on that submission.
 When a raw AVI file exists, this will temporarily nearly double the storage that the submission uses.
@@ -274,7 +276,7 @@ In addition to inserting a `sauron_config` into Valar, `sauronx modify` edits th
 
 If the ROI looks wrong, you should run `sauronx preview`. If you are using a nonstandard plate type,
 find the ID of the correct plate type with `sauronx lookup plate_types`.
-Then run `sauronx --plate-type 1`, replacing `1` with your plate type ID.
+Then run `sauronx --plate-type 1`, replacing `1` with your plate type ID or name.
 Then open the appropriate TOML file in a text editor (see the section on TOML files above).
 Scroll down to the section labeled `[sauron.roi.1]`, replacing `.1` with your plate type ID for nonstandard plates.
 Edit the values `x0`, `x1`, `y0`, `y1`, `padx` and `pady` as needed†.
